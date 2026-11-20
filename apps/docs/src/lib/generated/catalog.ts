@@ -3001,6 +3001,56 @@ export const CATALOG: ComponentDoc[] = [
         "defaultValue": "clinical"
       }
     ],
+    "examples": [
+      {
+        "id": "closed-with-summaries",
+        "title": "The closed record already tells you where to look",
+        "description": "Five sections, none opened. Severity, status, counts and timestamps make the record legible before the reader expands anything. The summary is the point, not decoration around the disclosure.",
+        "code": "<ChartAccordion\n  toolbarLabel=\"Ada Lovelace · 38 · MRN 4471902\"\n  headingLevel={3}\n  sections={[\n    {\n      key: \"risk\",\n      label: \"Risk & suicidality\",\n      severity: \"critical\",\n      status: \"C-SSRS positive\",\n      updatedAt: \"2026-08-13T09:12:00+05:30\",\n      children: <RiskPanel />,\n    },\n    {\n      key: \"meds\",\n      label: \"Medications\",\n      severity: \"high\",\n      status: \"Clozapine ANC due 18 Aug\",\n      count: \"4 active\",\n      children: <MedicationList />,\n    },\n    {\n      key: \"notes\",\n      label: \"Progress notes\",\n      count: \"142 encounters\",\n      updatedAt: \"2026-08-13\",\n      children: <ProgressNotes />,\n    },\n  ]}\n/>"
+      },
+      {
+        "id": "expanded",
+        "title": "Open the sections that need attention",
+        "description": "A record can start with selected sections open. The reader gets the relevant detail immediately without losing the summaries or the ability to expand the rest.",
+        "code": "<ChartAccordion\n  toolbarLabel=\"Ada Lovelace · 38 · MRN 4471902\"\n  headingLevel={3}\n  defaultOpenKeys={[\"risk\", \"assessments\"]}\n  sections={sections}\n/>"
+      },
+      {
+        "id": "severity-scale",
+        "title": "Every severity arrives with its words",
+        "description": "Critical, high, normal and unknown all carry a status. The closed header never relies on colour alone to communicate clinical meaning.",
+        "code": "<ChartAccordion\n  sections={[\n    { key: \"risk\", label: \"Risk\", severity: \"critical\",\n      status: \"C-SSRS positive\" },\n    { key: \"meds\", label: \"Medications\", severity: \"high\",\n      status: \"ANC due 18 Aug\" },\n    { key: \"plan\", label: \"Safety plan\", severity: \"normal\",\n      status: \"Current\" },\n    { key: \"audit\", label: \"AUDIT\", severity: \"unknown\",\n      status: \"Not asked this visit\" },\n  ]}\n/>"
+      },
+      {
+        "id": "expand-collapse-all",
+        "title": "Expand the record, without crossing a boundary",
+        "description": "The toolbar opens every section the reader may access and closes them again. A withheld section stays closed: expand all is a chart action, not permission to disclose.",
+        "code": "<ChartAccordion\n  toolbarLabel=\"Ada Lovelace · 38 · MRN 4471902\"\n  sections={[\n    ...sections,\n    {\n      key: \"psychotherapy\",\n      label: \"Psychotherapy notes\",\n      access: {\n        kind: \"withheld\",\n        reason: \"Kept separately by the author\",\n      },\n    },\n  ]}\n/>"
+      },
+      {
+        "id": "consent-gate",
+        "title": "Consent is checked before protected content appears",
+        "description": "A governed section names its policy in the closed summary and at the gate. The disclosure callback lets the host application decide whether access can proceed; the component does not grant consent by itself.",
+        "code": "<ChartAccordion\n  defaultOpenKeys={[\"sud\"]}\n  onDisclose={async (event) => audit.record(event)}\n  sections={[\n    {\n      key: \"sud\",\n      label: \"Substance use treatment\",\n      severity: \"unknown\",\n      status: \"42 CFR Part 2\",\n      access: {\n        kind: \"consent\",\n        policy: \"42 CFR Part 2\",\n        state: \"granted\",\n      },\n      children: <SubstanceUsePanel />,\n    },\n  ]}\n/>"
+      },
+      {
+        "id": "withheld-section",
+        "title": "Withheld means withheld, not empty",
+        "description": "A separately retained section says that it is restricted and why. It has no hidden children to reveal, and expanding the rest of the record does not change that boundary.",
+        "code": "<ChartAccordion\n  sections={[\n    {\n      key: \"psychotherapy\",\n      label: \"Psychotherapy notes\",\n      access: {\n        kind: \"withheld\",\n        reason: \"Kept separately by the author\",\n      },\n    },\n  ]}\n/>"
+      },
+      {
+        "id": "failed-section",
+        "title": "One failed section does not take down the record",
+        "description": "A failed care-team section identifies its own incomplete content. The other sections remain available, and the reader is not left guessing whether the entire record loaded.",
+        "code": "<ChartAccordion\n  defaultOpenKeys={[\"team\"]}\n  sections={[\n    ...sections,\n    {\n      key: \"team\",\n      label: \"Care team\",\n      severity: \"critical\",\n      status: \"Could not load\",\n      children: (\n        <p>\n          Could not load the care team. This list may be incomplete.\n          The rest of this record loaded normally.\n        </p>\n      ),\n    },\n  ]}\n/>"
+      },
+      {
+        "id": "no-sections",
+        "title": "An empty record still has an identity",
+        "description": "With no sections to display, the toolbar label still identifies whose record is being viewed. An empty result is distinguishable from a component that failed to render.",
+        "code": "<ChartAccordion\n  toolbarLabel=\"Ada Lovelace · 38 · MRN 4471902\"\n  sections={[]}\n/>"
+      }
+    ],
     "relationships": {
       "builtWith": [
         "accordion"
@@ -13350,6 +13400,32 @@ export const CATALOG: ComponentDoc[] = [
           "clinical"
         ],
         "defaultValue": "patient"
+      }
+    ],
+    "examples": [
+      {
+        "id": "complete-patient-plan",
+        "title": "Complete patient plan",
+        "description": "A completed six-step patient-facing safety plan. The crisis contacts remain visible in the pinned-open step.",
+        "code": "<SafetyPlan steps={steps} revisedAt=\"2026-08-11\" headingLevel={3} />"
+      },
+      {
+        "id": "unfinished-plan",
+        "title": "Unfinished plan",
+        "description": "Only some steps have been completed. The remaining steps stay visible and are identified as unfinished.",
+        "code": "<SafetyPlan steps={{ warningSigns: { entries: [\"Sleeping less than four hours\"] } }} />"
+      },
+      {
+        "id": "empty-plan",
+        "title": "Empty plan",
+        "description": "An empty plan still displays all six steps, including the pinned-open crisis step.",
+        "code": "<SafetyPlan steps={{}} />"
+      },
+      {
+        "id": "clinician-editing",
+        "title": "Clinician editing view",
+        "description": "The clinician editing view disables crisis-step pinning and uses standard density.",
+        "code": "<SafetyPlan steps={steps} pinCrisisStep={false} density=\"standard\" />"
       }
     ],
     "relationships": {
