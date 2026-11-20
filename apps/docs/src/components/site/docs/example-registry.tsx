@@ -37,6 +37,7 @@ import * as PcDemo from "../provenance-chip-demos";
 import * as RpsDemo from "../recent-patient-stack-demos";
 import * as RvDemo from "../result-value-demos";
 import * as RiskDemo from "../risk-indicator-demos";
+import * as CopilotDemo from "../copilot-demos";
 import * as ChartAccordionDemo from "../chart-accordion-demos";
 import * as TrendDemo from "../trend-indicator-examples";
 import {
@@ -494,6 +495,14 @@ export const EXAMPLE_PREVIEWS: Readonly<
     expired: () => <RiskDemo.ExpiredNotOld />,
     unscored: () => <RiskDemo.NotScoredIsNotLow />,
     concentration: () => <RiskDemo.ConcentrationDominance />,
+  },
+  copilot: {
+    "mode-scope": () => <CopilotDemo.ModeScopePreview />,
+    "grounded-citations": () => <CopilotDemo.GroundedCitationsPreview />,
+    "out-of-scope": () => <CopilotDemo.OutOfScopePreview />,
+    "untrusted-chart-content": () => <CopilotDemo.UntrustedChartPreview />,
+    "crisis-interruption": () => <CopilotDemo.CrisisInterruptionPreview />,
+    "fhir-audit-event": () => <CopilotDemo.AuditEventPreview />,
   },
 
   "chart-accordion": {
