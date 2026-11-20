@@ -37,6 +37,9 @@ import * as PcDemo from "../provenance-chip-demos";
 import * as RpsDemo from "../recent-patient-stack-demos";
 import * as RvDemo from "../result-value-demos";
 import * as RiskDemo from "../risk-indicator-demos";
+import * as CopilotDemo from "../copilot-demos";
+import * as ChartAccordionDemo from "../chart-accordion-demos";
+import * as TrendDemo from "../trend-indicator-examples";
 import {
   IdentityDisclosureDemo,
   IdentityGuardDemo,
@@ -45,6 +48,7 @@ import {
 } from "../identity-demo";
 import * as AllergyDemo from "../allergy-chip-demos";
 import * as ClinicalNoteDemo from "../clinical-note-demos";
+import * as SafetyPlanDemo from "../safety-plan-demos";
 
 /* ------------------------------------------------------------------ */
 /* Stand-ins for the host application                                  */
@@ -493,6 +497,32 @@ export const EXAMPLE_PREVIEWS: Readonly<
     unscored: () => <RiskDemo.NotScoredIsNotLow />,
     concentration: () => <RiskDemo.ConcentrationDominance />,
   },
+  copilot: {
+    "mode-scope": () => <CopilotDemo.ModeScopePreview />,
+    "grounded-citations": () => <CopilotDemo.GroundedCitationsPreview />,
+    "out-of-scope": () => <CopilotDemo.OutOfScopePreview />,
+    "untrusted-chart-content": () => <CopilotDemo.UntrustedChartPreview />,
+    "crisis-interruption": () => <CopilotDemo.CrisisInterruptionPreview />,
+    "fhir-audit-event": () => <CopilotDemo.AuditEventPreview />,
+  },
+
+  "chart-accordion": {
+    "closed-with-summaries": () => <ChartAccordionDemo.ClosedWithSummaries />,
+    expanded: () => <ChartAccordionDemo.Expanded />,
+    "severity-scale": () => <ChartAccordionDemo.SeverityScale />,
+    "expand-collapse-all": () => <ChartAccordionDemo.ExpandCollapseAll />,
+    "consent-gate": () => <ChartAccordionDemo.ConsentGate />,
+    "withheld-section": () => <ChartAccordionDemo.WithheldSection />,
+    "failed-section": () => <ChartAccordionDemo.FailedSection />,
+    "no-sections": () => <ChartAccordionDemo.NoSections />,
+  },
+
+  "trend-indicator": {
+    valence: () => <TrendDemo.ValencePreview />,
+    comparability: () => <TrendDemo.ComparabilityPreview />,
+    noise: () => <TrendDemo.NoisePreview />,
+    "too-few": () => <TrendDemo.TooFewPreview />,
+  },
 
   identity: {
     worklist: () => <IdentityWorklistDemo />,
@@ -514,6 +544,13 @@ export const EXAMPLE_PREVIEWS: Readonly<
     "sign-gate": () => <ClinicalNoteDemo.WhatBlocksSigning />,
     "template-blanks": () => <ClinicalNoteDemo.TemplateBlanks />,
     "signed-reader": () => <ClinicalNoteDemo.SignedReader />,
+  },
+
+  "safety-plan": {
+    "complete-patient-plan": () => <SafetyPlanDemo.CompletePatientPlan />,
+    "unfinished-plan": () => <SafetyPlanDemo.UnfinishedPlan />,
+    "empty-plan": () => <SafetyPlanDemo.EmptyPlan />,
+    "clinician-editing": () => <SafetyPlanDemo.ClinicianEditing />,
   },
 };
 
